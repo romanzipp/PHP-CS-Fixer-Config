@@ -2,7 +2,6 @@
 
 namespace romanzipp\Fixer\Presets;
 
-use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 
 abstract class AbstractPreset
@@ -31,13 +30,13 @@ abstract class AbstractPreset
             $this->getExcludedDirectories()
         );
 
-        $finder->name(
-            $this->getFilePatterns()
-        );
+        foreach ($this->getFilePatterns() as $filePattern) {
+            $finder->name($filePattern);
+        }
 
-        $finder->notName(
-            $this->getExcludedFiles()
-        );
+        foreach ($this->getExcludedFiles() as $excludedFile) {
+            $finder->notName($excludedFile);
+        }
 
         $finder->ignoreDotFiles(
             $this->ignoreDotFiles()
