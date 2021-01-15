@@ -2,6 +2,9 @@
 
 namespace romanzipp\Fixer\Presets;
 
+/**
+ * @internal
+ */
 final class DynamicPreset extends AbstractPreset
 {
     /**
