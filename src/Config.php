@@ -50,6 +50,7 @@ final class Config
      * Set the preset.
      *
      * @param \romanzipp\Fixer\Presets\AbstractPreset $preset
+     *
      * @return $this
      */
     public function preset(AbstractPreset $preset): self
@@ -67,6 +68,7 @@ final class Config
      * Add a preset.
      *
      * @param \romanzipp\Fixer\Presets\AbstractPreset $preset
+     *
      * @return $this
      */
     public function withPreset(AbstractPreset $preset): self
@@ -80,6 +82,7 @@ final class Config
      * Set the working directory.
      *
      * @param string $workingDir
+     *
      * @return $this
      */
     public function in(string $workingDir): self
@@ -93,11 +96,12 @@ final class Config
      * Add single or many files to the list of excluded files.
      *
      * @param array|string $files
+     *
      * @return self
      */
     public function exclude($files): self
     {
-        array_walk($this->presets,  function (AbstractPreset $preset) use ($files) {
+        array_walk($this->presets, function (AbstractPreset $preset) use ($files) {
             if ($preset instanceof DynamicPreset) {
                 $preset->excludedFiles = array_merge($preset->excludedFiles, (array) $files);
             }
@@ -110,6 +114,7 @@ final class Config
      * Add single or many files to the list of excluded files.
      *
      * @param array|string $directories
+     *
      * @return self
      */
     public function excludeDirectories($directories): self
@@ -127,6 +132,7 @@ final class Config
      * Add a callback function to modify the php-cs-fixer config instance.
      *
      * @param \Closure $callback
+     *
      * @return $this
      */
     public function configCallback(Closure $callback): self
@@ -140,6 +146,7 @@ final class Config
      * Add a callback function to modify the php-cs-fixer finder instance.
      *
      * @param \Closure $callback
+     *
      * @return $this
      */
     public function finderCallback(Closure $callback): self

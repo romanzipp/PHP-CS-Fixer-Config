@@ -9,8 +9,8 @@ class PrettyPHP extends AbstractPreset
         return [
             '@Symfony' => true,                         // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.17/doc/ruleSets/Symfony.rst
             'array_indentation' => true,                // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.17/doc/rules/whitespace/array_indentation.rst
+            // see https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/4487
             'braces' => true,                           // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.17/doc/rules/basic/braces.rst
-                                                        // see https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/4487
             'concat_space' => [                         // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.17/doc/rules/operator/concat_space.rst
                 'spacing' => 'one',
             ],
