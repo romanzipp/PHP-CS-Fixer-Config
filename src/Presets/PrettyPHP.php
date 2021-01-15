@@ -7,33 +7,21 @@ class PrettyPHP extends AbstractPreset
     public function getRules(): array
     {
         return [
-            '@Symfony' => true,
-            'array_indentation' => true,
-            'array_syntax' => [
-                'syntax' => 'short',
-            ],
-            'binary_operator_spaces' => true,
-            // https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/4487
-            'braces' => true,
-            'compact_nullable_typehint' => true,
-            'concat_space' => [
+            '@Symfony' => true,                         // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.17/doc/ruleSets/Symfony.rst
+            'array_indentation' => true,                // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.17/doc/rules/whitespace/array_indentation.rst
+            'braces' => true,                           // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.17/doc/rules/basic/braces.rst
+                                                        // see https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/4487
+            'concat_space' => [                         // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.17/doc/rules/operator/concat_space.rst
                 'spacing' => 'one',
             ],
-            'fully_qualified_strict_types' => true,
-            'no_superfluous_phpdoc_tags' => false,
-            'no_useless_return' => true,
-            'not_operator_with_space' => true,
-            'ordered_imports' => [
-                'sortAlgorithm' => 'alpha',
-            ],
-            'php_unit_fqcn_annotation' => true,
-            'phpdoc_align' => [
+            'no_superfluous_phpdoc_tags' => false,      // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.17/doc/rules/phpdoc/no_superfluous_phpdoc_tags.rst
+            'no_useless_return' => true,                // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.17/doc/rules/return_notation/no_useless_return.rst
+            'not_operator_with_space' => true,          // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.17/doc/rules/operator/not_operator_with_space.rst
+            'phpdoc_align' => [                         // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.17/doc/rules/phpdoc/phpdoc_align.rst
                 'align' => 'left',
             ],
-            'phpdoc_order' => true,
-            'phpdoc_scalar' => true,
-            'phpdoc_to_comment' => false,
-            'phpdoc_var_without_name' => true,
+            'phpdoc_order' => true,                     // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.17/doc/rules/phpdoc/phpdoc_order.rst
+            'phpdoc_to_comment' => false,               // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.17/doc/rules/phpdoc/phpdoc_to_comment.rst
         ];
     }
 
