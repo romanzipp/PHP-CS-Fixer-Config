@@ -17,7 +17,7 @@ composer require romanzipp/php-cs-fixer-config
 
 ```php
 return romanzipp\Fixer\Config::make()
-    ->in(__DiR__)
+    ->in(__DIR__)
     ->preset(
         new romanzipp\Fixer\Presets\PrettyLaravel()
     )
@@ -28,7 +28,7 @@ return romanzipp\Fixer\Config::make()
 
 ```php
 return romanzipp\Fixer\Config::make()
-    ->in(__DiR__)
+    ->in(__DIR__)
     ->preset(
         new romanzipp\Fixer\Presets\PrettyLaravel()
     )
@@ -45,7 +45,7 @@ return romanzipp\Fixer\Config::make()
 
 ```php
 return romanzipp\Fixer\Config::make()
-    ->in(__DiR__)
+    ->in(__DIR__)
     ->preset(
         new romanzipp\Fixer\Presets\PrettyLaravel()
     )
