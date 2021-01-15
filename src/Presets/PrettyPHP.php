@@ -22,7 +22,6 @@ class PrettyPHP extends AbstractPreset
             ],
             'phpdoc_return_self_reference' => [         // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.17/doc/rules/phpdoc/phpdoc_return_self_reference.rst
                 'this' => 'self',
-                '$this' => 'self',
                 '@this' => 'self',
                 '$self' => 'self',
                 '@self' => 'self',
