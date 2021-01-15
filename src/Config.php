@@ -2,6 +2,7 @@
 
 namespace romanzipp\Fixer;
 
+use Closure;
 use PhpCsFixer\Config as BaseConfig;
 use PhpCsFixer\Finder;
 use romanzipp\Fixer\Presets\AbstractPreset;
@@ -40,6 +41,12 @@ final class Config
         return new self();
     }
 
+    /**
+     * Set the preset.
+     *
+     * @param \romanzipp\Fixer\Presets\AbstractPreset $preset
+     * @return $this
+     */
     public function preset(AbstractPreset $preset): self
     {
         $this->presets = [$preset];
@@ -47,6 +54,12 @@ final class Config
         return $this;
     }
 
+    /**
+     * Add a preset.
+     *
+     * @param \romanzipp\Fixer\Presets\AbstractPreset $preset
+     * @return $this
+     */
     public function withPreset(AbstractPreset $preset): self
     {
         $this->presets[] = $preset;
@@ -54,6 +67,12 @@ final class Config
         return $this;
     }
 
+    /**
+     * Set the working directory.
+     *
+     * @param string $workingDir
+     * @return $this
+     */
     public function in(string $workingDir): self
     {
         $this->workingDir = $workingDir;
@@ -61,6 +80,37 @@ final class Config
         return $this;
     }
 
+    /**
+     * Add a callback function to modify the php-cs-fixer config instance.
+     *
+     * @param \Closure $callback
+     * @return $this
+     */
+    public function configCallback(Closure $callback): self
+    {
+        $callback($this->config);
+
+        return $this;
+    }
+
+    /**
+     * Add a callback function to modify the php-cs-fixer finder instance.
+     *
+     * @param \Closure $callback
+     * @return $this
+     */
+    public function finderCallback(Closure $callback): self
+    {
+        $callback($this->finder);
+
+        return $this;
+    }
+
+    /**
+     * Generate the php-cs-fixer config for final return.
+     *
+     * @return \PhpCsFixer\Config
+     */
     public function out(): BaseConfig
     {
         if (null === $this->workingDir) {

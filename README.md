@@ -23,5 +23,8 @@ return romanzipp\Fixer\Config::make()
     ->preset(
         new romanzipp\Fixer\Presets\PrettyLaravel()
     )
+    ->finderCallback(function (PhpCsFixer\Finder $finder): void {
+        $finder->notName('foo.php');
+    })
     ->out();
 ```
