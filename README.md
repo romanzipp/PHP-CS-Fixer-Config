@@ -15,7 +15,16 @@ composer require romanzipp/php-cs-fixer-config
 
 ## Usage
 
-#### `.php_cs.dist`
+```php
+return romanzipp\Fixer\Config::make()
+    ->in(__DiR__)
+    ->preset(
+        new romanzipp\Fixer\Presets\PrettyLaravel()
+    )
+    ->out();
+```
+
+### Exclude files or directories
 
 ```php
 return romanzipp\Fixer\Config::make()
@@ -23,8 +32,28 @@ return romanzipp\Fixer\Config::make()
     ->preset(
         new romanzipp\Fixer\Presets\PrettyLaravel()
     )
-    ->finderCallback(function (PhpCsFixer\Finder $finder): void {
-        $finder->notName('foo.php');
+    ->exclude([
+        'wordpress.php',
+    ])
+    ->excludeDirectories([
+        'wp',
+    ])
+    ->out();
+```
+
+### Access the config and finder instances
+
+```php
+return romanzipp\Fixer\Config::make()
+    ->in(__DiR__)
+    ->preset(
+        new romanzipp\Fixer\Presets\PrettyLaravel()
+    )
+    ->finderCallback(static function (PhpCsFixer\Finder $finder): void {
+        // ...
+    })
+    ->configCallback(static function (PhpCsFixer\Config $config): void {
+        // ...
     })
     ->out();
 ```
