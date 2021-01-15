@@ -6,6 +6,7 @@ use Closure;
 use PhpCsFixer\Config as BaseConfig;
 use PhpCsFixer\Finder;
 use romanzipp\Fixer\Presets\AbstractPreset;
+use romanzipp\Fixer\Presets\DynamicPreset;
 use RuntimeException;
 
 final class Config
@@ -28,12 +29,16 @@ final class Config
     /**
      * @var \romanzipp\Fixer\Presets\AbstractPreset[]
      */
-    private $presets;
+    private $presets = [];
 
     public function __construct()
     {
         $this->config = new BaseConfig();
         $this->finder = new Finder();
+
+        $this->presets = [
+            new DynamicPreset(),
+        ];
     }
 
     public static function make(): self
@@ -49,7 +54,11 @@ final class Config
      */
     public function preset(AbstractPreset $preset): self
     {
-        $this->presets = [$preset];
+        $this->presets = array_filter($this->presets, static function (AbstractPreset $preset) {
+            return $preset instanceof DynamicPreset;
+        });
+
+        $this->withPreset($preset);
 
         return $this;
     }
@@ -76,6 +85,40 @@ final class Config
     public function in(string $workingDir): self
     {
         $this->workingDir = $workingDir;
+
+        return $this;
+    }
+
+    /**
+     * Add single or many files to the list of excluded files.
+     *
+     * @param array|string $files
+     * @return self
+     */
+    public function exclude($files): self
+    {
+        array_walk($this->presets,  function (AbstractPreset $preset) use ($files) {
+            if ($preset instanceof DynamicPreset) {
+                $preset->excludedFiles = array_merge($preset->excludedFiles, (array) $files);
+            }
+        });
+
+        return $this;
+    }
+
+    /**
+     * Add single or many files to the list of excluded files.
+     *
+     * @param array|string $directories
+     * @return self
+     */
+    public function excludeDirectories($directories): self
+    {
+        array_walk($this->presets, static function (AbstractPreset $preset) use ($directories) {
+            if ($preset instanceof DynamicPreset) {
+                $preset->excludedDirectories = array_merge($preset->excludedDirectories, (array) $directories);
+            }
+        });
 
         return $this;
     }
