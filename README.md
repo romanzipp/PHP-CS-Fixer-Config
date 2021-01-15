@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/packagist/l/romanzipp/PHP-CS-Fixer-Config.svg?style=flat-square)](https://packagist.org/packages/romanzipp/php-cs-fixer-config)
 [![GitHub Build Status](https://img.shields.io/github/workflow/status/romanzipp/PHP-CS-Fixer-Config/Tests?style=flat-square)](https://github.com/romanzipp/PHP-CS-Fixer-Config/actions)
 
-Personal PHP-CS-Fixer wrapper & preset management.
+Personal [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) wrapper & preset management.
 
 ## Installation
 
@@ -28,16 +28,14 @@ return romanzipp\Fixer\Config::make()
 
 ```php
 return romanzipp\Fixer\Config::make()
-    ->in(__DIR__)
-    ->preset(
-        new romanzipp\Fixer\Presets\PrettyLaravel()
-    )
+    // ...
     ->exclude([
         'wordpress.php',
     ])
     ->excludeDirectories([
         'wp',
     ])
+    // ...
     ->out();
 ```
 
@@ -45,15 +43,13 @@ return romanzipp\Fixer\Config::make()
 
 ```php
 return romanzipp\Fixer\Config::make()
-    ->in(__DIR__)
-    ->preset(
-        new romanzipp\Fixer\Presets\PrettyLaravel()
-    )
+    // ...
     ->finderCallback(static function (PhpCsFixer\Finder $finder): void {
         // ...
     })
     ->configCallback(static function (PhpCsFixer\Config $config): void {
         // ...
     })
+    // ...
     ->out();
 ```
