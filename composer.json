@@ -1,0 +1,36 @@
+{
+    "name": "romanzipp/php-cs-fixer-config",
+    "description": "Personal PHP-CS-Fixer Configuration",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "romanzipp",
+            "email": "ich@ich.wtf",
+            "homepage": "https://ich.wtf"
+        }
+    ],
+    "require": {
+        "php": "^7.1|^8.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "phpunit/phpunit": "^8.0|^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "romanzipp\\Fixer\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "romanzipp\\Fixer\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
