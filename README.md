@@ -10,7 +10,7 @@ Personal [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) wrapper & 
 ## Installation
 
 ```
-composer require romanzipp/php-cs-fixer-config
+composer require romanzipp/php-cs-fixer-config --dev
 ```
 
 ## Usage
