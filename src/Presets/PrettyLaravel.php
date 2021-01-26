@@ -19,6 +19,7 @@ class PrettyLaravel extends PrettyPHP
         return [
             'bootstrap',
             'storage',
+            'node_modules',
         ] + parent::getExcludedDirectories();
     }
 
