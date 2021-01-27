@@ -24,6 +24,11 @@ return romanzipp\Fixer\Config::make()
     ->out();
 ```
 
+### Available Presets
+
+- [**PrettyPHP**](src/Presets/PrettyPHP.php)
+- [**PrettyLaravel**](src/Presets/PrettyLaravel.php) (extends [PrettyPHP](src/Presets/PrettyPHP.php))
+
 ### Exclude files or directories
 
 ```php
@@ -53,3 +58,23 @@ return romanzipp\Fixer\Config::make()
     // ...
     ->out();
 ```
+
+## PHPStorm Configuration
+
+### 1. Enable Inspection
+
+![](images/inspection.png)
+
+### 2. Select ruleset `[...]`
+
+![](images/ruleset.png)
+
+### 3. Navigate to Quality Tools
+
+![](images/tools.png)
+
+### 4. Select PHP-CS-Fixer executable
+
+You will need to select the `php-cs-fixer` file from the `vendor/bin` directory relative to your project folder.
+
+![](images/bin-path.png)
