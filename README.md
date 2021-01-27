@@ -78,3 +78,7 @@ return romanzipp\Fixer\Config::make()
 You will need to select the `php-cs-fixer` file from the `vendor/bin` directory relative to your project folder.
 
 ![](images/bin-path.png)
+
+Unfortunately you have to repeat the whole process for every project since [there is a bug in PHPStorm](https://youtrack.jetbrains.com/issue/WI-56557) which prevents users from using relative paths for the `.php_cs.dist` configuration or executable file.
+
+Another theoretical approach to this issue is installing PHP-CS-Fixer and this package globally via `composer global require ...` but I haven't tried it yet.
