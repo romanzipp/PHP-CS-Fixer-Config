@@ -29,7 +29,7 @@ final class Config
     /**
      * @var \romanzipp\Fixer\Presets\AbstractPreset[]
      */
-    private $presets = [];
+    private $presets;
 
     public function __construct()
     {
@@ -115,10 +115,8 @@ final class Config
      */
     public function withRules(array $rules): self
     {
-        array_walk($this->presets, static function (AbstractPreset $preset) use ($rules) {
-            if ($preset instanceof DynamicPreset) {
-                $preset->rules = array_merge($preset->rules, $rules);
-            }
+        $this->updateDynamicPreset(static function (DynamicPreset $preset) use ($rules) {
+            $preset->rules = array_merge($preset->rules, $rules);
         });
 
         return $this;
@@ -133,10 +131,8 @@ final class Config
      */
     public function exclude($files): self
     {
-        array_walk($this->presets, static function (AbstractPreset $preset) use ($files) {
-            if ($preset instanceof DynamicPreset) {
-                $preset->excludedFiles = array_merge($preset->excludedFiles, (array) $files);
-            }
+        $this->updateDynamicPreset(static function (DynamicPreset $preset) use ($files) {
+            $preset->excludedFiles = array_merge($preset->excludedFiles, (array) $files);
         });
 
         return $this;
@@ -151,10 +147,8 @@ final class Config
      */
     public function excludeDirectories($directories): self
     {
-        array_walk($this->presets, static function (AbstractPreset $preset) use ($directories) {
-            if ($preset instanceof DynamicPreset) {
-                $preset->excludedDirectories = array_merge($preset->excludedDirectories, (array) $directories);
-            }
+        $this->updateDynamicPreset(static function (DynamicPreset $preset) use ($directories) {
+            $preset->excludedDirectories = array_merge($preset->excludedDirectories, (array) $directories);
         });
 
         return $this;
@@ -186,6 +180,20 @@ final class Config
         $callback($this->finder);
 
         return $this;
+    }
+
+    /**
+     * Run a given callback on the dynamic preset.
+     *
+     * @param \Closure $callback
+     */
+    private function updateDynamicPreset(Closure $callback): void
+    {
+        array_walk($this->presets, static function (AbstractPreset $preset) use ($callback) {
+            if ($preset instanceof DynamicPreset) {
+                $callback($preset);
+            }
+        });
     }
 
     /**
