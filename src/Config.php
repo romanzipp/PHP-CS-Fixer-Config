@@ -107,6 +107,24 @@ final class Config
     }
 
     /**
+     * Add additional rules. Please rather use presets. Nonetheless, here you go.
+     *
+     * @param array $rules
+     *
+     * @return $this
+     */
+    public function withRules(array $rules): self
+    {
+        array_walk($this->presets, static function (AbstractPreset $preset) use ($rules) {
+            if ($preset instanceof DynamicPreset) {
+                $preset->rules = array_merge($preset->rules, $rules);
+            }
+        });
+
+        return $this;
+    }
+
+    /**
      * Add single or many files to the list of excluded files.
      *
      * @param array|string $files
@@ -115,7 +133,7 @@ final class Config
      */
     public function exclude($files): self
     {
-        array_walk($this->presets, function (AbstractPreset $preset) use ($files) {
+        array_walk($this->presets, static function (AbstractPreset $preset) use ($files) {
             if ($preset instanceof DynamicPreset) {
                 $preset->excludedFiles = array_merge($preset->excludedFiles, (array) $files);
             }
