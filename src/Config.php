@@ -93,6 +93,20 @@ final class Config
     }
 
     /**
+     * Allow risky rules.
+     *
+     * @param bool $allow
+     *
+     * @return $this
+     */
+    public function allowRisky(bool $allow = true): self
+    {
+        $this->config->setRiskyAllowed($allow);
+
+        return $this;
+    }
+
+    /**
      * Add single or many files to the list of excluded files.
      *
      * @param array|string $files

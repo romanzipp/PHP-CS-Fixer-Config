@@ -100,4 +100,15 @@ class ConfigTest extends TestCase
         self::assertArrayNotHasKey(__DIR__ . '/Files/ExcludedFolder/file.php', $files);
         self::assertArrayNotHasKey(__DIR__ . '/Files/PartiallyExcludedFolder/file.php', $files);
     }
+
+    public function testRiskyRules()
+    {
+        $config = Config::make();
+
+        self::assertFalse($config->config->getRiskyAllowed());
+
+        $config->allowRisky();
+
+        self::assertTrue($config->config->getRiskyAllowed());
+    }
 }
