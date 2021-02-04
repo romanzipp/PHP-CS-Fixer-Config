@@ -10,7 +10,7 @@ class DynamicPresetTest extends TestCase
     public function testDynamicPrestUpdatesFinder()
     {
         $config = Config::make()
-            ->in(__DIR__ . '/Files')
+            ->in(__DIR__ . '/files/dummy')
             ->preset(new TestPreset())
             ->exclude('partially-excluded.php')
             ->excludeDirectories('PartiallyExcludedFolder')
@@ -18,22 +18,22 @@ class DynamicPresetTest extends TestCase
 
         $files = iterator_to_array($config->getFinder()->getIterator());
 
-        self::assertArrayHasKey(__DIR__ . '/Files/included.php', $files);
+        self::assertArrayHasKey(__DIR__ . '/files/dummy/included.php', $files);
 
-        self::assertArrayNotHasKey(__DIR__ . '/Files/partially-excluded.php', $files);
-        self::assertArrayNotHasKey(__DIR__ . '/Files/excluded.php', $files);
-        self::assertArrayNotHasKey(__DIR__ . '/Files/foo.ignoreme.php', $files);
+        self::assertArrayNotHasKey(__DIR__ . '/files/dummy/partially-excluded.php', $files);
+        self::assertArrayNotHasKey(__DIR__ . '/files/dummy/excluded.php', $files);
+        self::assertArrayNotHasKey(__DIR__ . '/files/dummy/foo.ignoreme.php', $files);
 
-        self::assertArrayHasKey(__DIR__ . '/Files/IncludedFolder/file.php', $files);
+        self::assertArrayHasKey(__DIR__ . '/files/dummy/IncludedFolder/file.php', $files);
 
-        self::assertArrayNotHasKey(__DIR__ . '/Files/ExcludedFolder/file.php', $files);
-        self::assertArrayNotHasKey(__DIR__ . '/Files/PartiallyExcludedFolder/file.php', $files);
+        self::assertArrayNotHasKey(__DIR__ . '/files/dummy/ExcludedFolder/file.php', $files);
+        self::assertArrayNotHasKey(__DIR__ . '/files/dummy/PartiallyExcludedFolder/file.php', $files);
     }
 
     public function testRules()
     {
         $builder = Config::make()
-            ->in(__DIR__ . '/Files')
+            ->in(__DIR__ . '/files/dummy')
             ->withPreset(new TestPreset());
 
         self::assertSame(['example_rule'], $builder->out()->getRules());
