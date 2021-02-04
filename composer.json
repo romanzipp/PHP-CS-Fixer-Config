@@ -32,5 +32,8 @@
     },
     "config": {
         "sort-packages": true
-    }
+    },
+    "bin": [
+        "bin/install-phpstorm"
+    ]
 }
