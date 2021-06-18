@@ -21,12 +21,14 @@ class PrettyPHP extends AbstractPreset
                 'align' => 'left',
             ],
             'phpdoc_return_self_reference' => [         // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/doc/rules/phpdoc/phpdoc_return_self_reference.rst
-                'this' => 'self',
-                '@this' => 'self',
-                '$self' => 'self',
-                '@self' => 'self',
-                '$static' => 'static',
-                '@static' => 'static',
+                'replacements' => [
+                    'this' => 'self',
+                    '@this' => 'self',
+                    '$self' => 'self',
+                    '@self' => 'self',
+                    '$static' => 'static',
+                    '@static' => 'static',
+                ],
             ],
             'phpdoc_order' => true,                     // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/doc/rules/phpdoc/phpdoc_order.rst
             'phpdoc_to_comment' => false,               // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/doc/rules/phpdoc/phpdoc_to_comment.rst
