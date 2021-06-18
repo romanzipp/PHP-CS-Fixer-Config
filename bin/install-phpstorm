@@ -1,0 +1,157 @@
+#!/usr/bin/env php
+<?php
+
+if ( ! extension_loaded('simplexml')) {
+    throw new RuntimeException('The simplexml extension is required to run the script');
+}
+
+$possibleFiles = [
+    __DIR__ . '/../../../autoload.php',
+    __DIR__ . '/../../autoload.php',
+    __DIR__ . '/../vendor/autoload.php',
+];
+
+$file = null;
+
+foreach ($possibleFiles as $possibleFile) {
+    if (file_exists($possibleFile)) {
+        $file = $possibleFile;
+
+        break;
+    }
+}
+
+if (null === $file) {
+    throw new RuntimeException('Unable to locate autoload.php file');
+}
+
+require_once $file;
+
+if ( ! file_exists($ideaDirectory = __DIR__ . '/../../../../.idea')) {
+    throw new RuntimeException('Unable to locate .idea directory');
+}
+
+function install_profile()
+{
+    global $ideaDirectory;
+
+    $profileStub = <<<EOF
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Default" />
+    <inspection_tool class="PhpCSFixerValidationInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="CODING_STANDARD" value="Custom" />
+      <option name="CUSTOM_RULESET_PATH" value="\$PROJECT_DIR\$/.php_cs.dist" />
+    </inspection_tool>
+  </profile>
+</component>
+EOF;
+
+    if (file_exists($profilePath = $ideaDirectory . '/inspectionProfiles/Default.xml')) {
+        $xml = simplexml_load_string(file_get_contents($profilePath));
+
+        if ( ! isset($xml->profile, $xml->profile->inspection_tool)) {
+            throw new RuntimeException('Invalid profile configuration');
+        }
+
+        /**
+         * @var \SimpleXMLElement $xmlInspectionTool
+         */
+        $xmlInspectionTool = $xml->profile->inspection_tool;
+
+        foreach ($xml->profile->children() as $item) {
+            /**
+             * @var \SimpleXMLElement $item
+             */
+            if ('inspection_tool' !== $item->getName()) {
+                continue;
+            }
+
+            if ('PhpCSFixerValidationInspection' !== (string) $item->attributes()->class) {
+                continue;
+            }
+
+            $rulesetExists = false;
+
+            foreach ($item->option as $option) {
+                /**
+                 * @var \SimpleXMLElement $option
+                 */
+                if ('CUSTOM_RULESET_PATH' === (string) $option->attributes()->name) {
+                    $rulesetExists = true;
+                }
+            }
+
+            if ( ! $rulesetExists) {
+                $ruleset = $item->addChild('option');
+                $ruleset->addAttribute('name', 'CUSTOM_RULESET_PATH');
+                $ruleset->addAttribute('value', '$PROJECT_DIR$/.php_cs.dist');
+            } else {
+                foreach ($item->option as $index => $option) {
+                    /**
+                     * @var \SimpleXMLElement $option
+                     */
+                    if ('CUSTOM_RULESET_PATH' === (string) $option->attributes()->name) {
+                        $option->attributes()->value = '$PROJECT_DIR$/.php_cs.dist';
+                    }
+                }
+            }
+        }
+
+        $xml->asXML($profilePath);
+    } else {
+        file_put_contents($profilePath, $profileStub);
+    }
+}
+
+function install_php_config()
+{
+    global $ideaDirectory;
+
+    $phpConfigStub = <<<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PhpCSFixer">
+    <phpcsfixer_settings>
+      <PhpCSFixerConfiguration standards="PSR1;PSR2;Symfony;DoctrineAnnotation;PHP70Migration;PHP71Migration" tool_path="\$PROJECT_DIR\$/vendor/friendsofphp/php-cs-fixer/php-cs-fixer" />
+    </phpcsfixer_settings>
+  </component>
+</project>
+EOF;
+
+    if (file_exists($configPath = $ideaDirectory . '/php.xml')) {
+        $xml = simplexml_load_string(file_get_contents($configPath));
+
+        $componentExists = false;
+
+        foreach ($xml->component as $component) {
+            /**
+             * @var \SimpleXMLElement $component
+             */
+            if ('PhpCSFixer' === (string) $component->attributes()->name) {
+                $componentExists = true;
+
+                $component->phpcsfixer_settings->PhpCSFixerConfiguration->attributes()->tool_path = '$PROJECT_DIR$/vendor/friendsofphp/php-cs-fixer/php-cs-fixer';
+            }
+        }
+
+        if ( ! $componentExists) {
+            $component = $xml->addChild('component');
+            $component->addAttribute('name', 'PhpCSFixer');
+
+            $settings = $component->addChild('phpcsfixer_settings');
+
+            $configuration = $settings->addChild('PhpCSFixerConfiguration');
+            $configuration->addAttribute('standards', 'PSR1;PSR2;Symfony;DoctrineAnnotation;PHP70Migration;PHP71Migration');
+            $configuration->addAttribute('tool_path', '$PROJECT_DIR$/vendor/friendsofphp/php-cs-fixer/php-cs-fixer');
+        }
+
+        var_dump($xml->asXML($configPath));
+    } else {
+        file_put_contents($configPath, $phpConfigStub);
+    }
+}
+
+install_profile();
+
+install_php_config();

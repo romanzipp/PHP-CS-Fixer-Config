@@ -12,7 +12,7 @@ class ConfigTest extends TestCase
     public function testRulesAreSet()
     {
         $config = Config::make()
-            ->in(__DIR__ . '/Files')
+            ->in(__DIR__ . '/files/dummy')
             ->preset(new TestPreset())
             ->out();
 
@@ -22,28 +22,28 @@ class ConfigTest extends TestCase
     public function testFinderConfiguredCorrectly()
     {
         $config = Config::make()
-            ->in(__DIR__ . '/Files')
+            ->in(__DIR__ . '/files/dummy')
             ->preset(new TestPreset())
             ->out();
 
         $files = iterator_to_array($config->getFinder()->getIterator());
 
-        self::assertArrayHasKey(__DIR__ . '/Files/included.php', $files);
-        self::assertArrayHasKey(__DIR__ . '/Files/partially-excluded.php', $files);
+        self::assertArrayHasKey(__DIR__ . '/files/dummy/included.php', $files);
+        self::assertArrayHasKey(__DIR__ . '/files/dummy/partially-excluded.php', $files);
 
-        self::assertArrayNotHasKey(__DIR__ . '/Files/excluded.php', $files);
-        self::assertArrayNotHasKey(__DIR__ . '/Files/foo.ignoreme.php', $files);
+        self::assertArrayNotHasKey(__DIR__ . '/files/dummy/excluded.php', $files);
+        self::assertArrayNotHasKey(__DIR__ . '/files/dummy/foo.ignoreme.php', $files);
 
-        self::assertArrayHasKey(__DIR__ . '/Files/IncludedFolder/file.php', $files);
-        self::assertArrayHasKey(__DIR__ . '/Files/PartiallyExcludedFolder/file.php', $files);
+        self::assertArrayHasKey(__DIR__ . '/files/dummy/IncludedFolder/file.php', $files);
+        self::assertArrayHasKey(__DIR__ . '/files/dummy/PartiallyExcludedFolder/file.php', $files);
 
-        self::assertArrayNotHasKey(__DIR__ . '/Files/ExcludedFolder/file.php', $files);
+        self::assertArrayNotHasKey(__DIR__ . '/files/dummy/ExcludedFolder/file.php', $files);
     }
 
     public function testMultiplePresetsExtendRules()
     {
         $config = Config::make()
-            ->in(__DIR__ . '/Files')
+            ->in(__DIR__ . '/files/dummy')
             ->withPreset(new TestPreset())
             ->withPreset(new AdditionalTestPreset())
             ->out();
@@ -57,7 +57,7 @@ class ConfigTest extends TestCase
     public function testConfigCallbackMethodOnFinder()
     {
         $config = Config::make()
-            ->in(__DIR__ . '/Files')
+            ->in(__DIR__ . '/files/dummy')
             ->preset(new TestPreset())
             ->finderCallback(function (Finder $finder): void {
                 $finder->notName('partially-excluded.php');
@@ -66,16 +66,16 @@ class ConfigTest extends TestCase
 
         $files = iterator_to_array($config->getFinder()->getIterator());
 
-        self::assertArrayHasKey(__DIR__ . '/Files/included.php', $files);
+        self::assertArrayHasKey(__DIR__ . '/files/dummy/included.php', $files);
 
-        self::assertArrayNotHasKey(__DIR__ . '/Files/partially-excluded.php', $files);
-        self::assertArrayNotHasKey(__DIR__ . '/Files/excluded.php', $files);
-        self::assertArrayNotHasKey(__DIR__ . '/Files/foo.ignoreme.php', $files);
+        self::assertArrayNotHasKey(__DIR__ . '/files/dummy/partially-excluded.php', $files);
+        self::assertArrayNotHasKey(__DIR__ . '/files/dummy/excluded.php', $files);
+        self::assertArrayNotHasKey(__DIR__ . '/files/dummy/foo.ignoreme.php', $files);
 
-        self::assertArrayHasKey(__DIR__ . '/Files/IncludedFolder/file.php', $files);
-        self::assertArrayHasKey(__DIR__ . '/Files/PartiallyExcludedFolder/file.php', $files);
+        self::assertArrayHasKey(__DIR__ . '/files/dummy/IncludedFolder/file.php', $files);
+        self::assertArrayHasKey(__DIR__ . '/files/dummy/PartiallyExcludedFolder/file.php', $files);
 
-        self::assertArrayNotHasKey(__DIR__ . '/Files/ExcludedFolder/file.php', $files);
+        self::assertArrayNotHasKey(__DIR__ . '/files/dummy/ExcludedFolder/file.php', $files);
     }
 
     public function testRiskyRules()
