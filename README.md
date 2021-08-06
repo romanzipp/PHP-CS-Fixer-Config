@@ -13,6 +13,8 @@ Personal [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) wrapper & 
 composer require romanzipp/php-cs-fixer-config --dev
 ```
 
+**Notice**: You also need to [install the PHP-CS-Fixer package](https://github.com/FriendsOfPHP/PHP-CS-Fixer#installation) itself if you need a local installation with executable in you `vendor/bin` folder.
+
 ## Usage
 
 This package has been created to streamline configuration management for multiple projects and keeping PHP CS Fixer rules up to date.
