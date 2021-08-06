@@ -15,11 +15,15 @@ composer require romanzipp/php-cs-fixer-config --dev
 
 ## Usage
 
+This package has been created to streamline configuration management for multiple projects and keeping PHP CS Fixer rules up to date.
+
+#### `.php-cs-fixer.dist.php`
+
 ```php
 return romanzipp\Fixer\Config::make()
     ->in(__DIR__)
     ->preset(
-        new romanzipp\Fixer\Presets\PrettyLaravel()
+        new romanzipp\Fixer\Presets\PrettyPHP()
     )
     ->out();
 ```
@@ -29,22 +33,22 @@ return romanzipp\Fixer\Config::make()
 - [**PrettyPHP**](src/Presets/PrettyPHP.php)
 - [**PrettyLaravel**](src/Presets/PrettyLaravel.php) (extends [PrettyPHP](src/Presets/PrettyPHP.php))
 
-### Exclude files or directories
+You can easily create your own presets by extending the [**AbstractPreset**](src/Presets/AbstractPreset.php) class.
+
+### Overriding presets
+
+In case you only need some tweaks for specific projects - which won't deserve an own preset - there are various methods you can make us of.
 
 ```php
-return romanzipp\Fixer\Config::make()
-    // ...
-    ->exclude([
-        'wordpress.php',
-    ])
-    ->excludeDirectories([
-        'wp',
-    ])
-    // ...
-    ->out();
+$config = romanzipp\Fixer\Config::make();
+
+$config->allowRisky(true);                  // Allow risky rules.
+$config->withRules(['...']);                // Set additional rules
+$config->exclude(['...']);                  // Add single or many files to the list of excluded files.
+$config->excludeDirectories(['...']);       // Add single or many directories to the list of excluded directories.
 ```
 
-### Access the config and finder instances
+#### Access the config and finder instances
 
 ```php
 return romanzipp\Fixer\Config::make()
