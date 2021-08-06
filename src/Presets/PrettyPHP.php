@@ -40,7 +40,7 @@ class PrettyPHP extends AbstractPreset
         return [
             '*.php',
             '.php_cs',
-            'php-cs-fixer.dist.php',
+            '.php-cs-fixer.dist.php',
         ];
     }
 
