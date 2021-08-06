@@ -14,7 +14,7 @@
         "php": "^7.1|^8.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.12",
+        "friendsofphp/php-cs-fixer": "^3.0",
         "phpunit/phpunit": "^7.0|^8.0|^9.0"
     },
     "autoload": {
