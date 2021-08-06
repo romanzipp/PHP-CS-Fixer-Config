@@ -139,7 +139,7 @@ final class Config
     }
 
     /**
-     * Add single or many files to the list of excluded files.
+     * Add single or many directories to the list of excluded directories.
      *
      * @param array|string $directories
      *
@@ -204,7 +204,7 @@ final class Config
     public function out(): BaseConfig
     {
         if (null === $this->workingDir) {
-            throw new RuntimeException('The working dir has not been set');
+            throw new RuntimeException('The working dir has not been set. Please specify the `in()` method');
         }
 
         $this->finder->in($this->workingDir);
