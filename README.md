@@ -61,24 +61,29 @@ return romanzipp\Fixer\Config::make()
 
 ## PHPStorm Configuration
 
+### Prequisites
+
+You will need to install PHP CS Fixer globally on your system because PHPStorm [does not allow](https://youtrack.jetbrains.com/issue/WI-56557) you to set the php-cs-fixer executable on a per-project basis or relative to the project path.
+
+```shell
+composer global require friendsofphp/php-cs-fixer
+```
 ### 1. Enable Inspection
 
 ![](images/inspection.png)
 
-### 2. Select ruleset `[...]`
+### 2. Select ruleset .php-cs-fixer.dist.php file `[...]`
 
 ![](images/ruleset.png)
 
-### 3. Navigate to Quality Tools
+Unfortunately you have to repeat this process for every project since [there is a bug in PHPStorm](https://youtrack.jetbrains.com/issue/WI-56557) which prevents users from using relative paths for the `.php-cs-fixer.dist.php` configuration or executable file.
 
-![](images/tools.png)
+Another theoretical approach to this issue is to create a unified ruleset file in your users .composer folder. This has the downside on only having one single ruleset.
+
+### 3. Navigate to Quality Tools by clicking on the "PHP CS Fixer" link
+
+![](images/navigate.png)
 
 ### 4. Select PHP-CS-Fixer executable
 
-You will need to select the `php-cs-fixer` file from the `vendor/bin` directory relative to your project folder.
-
-![](images/bin-path.png)
-
-Unfortunately you have to repeat the whole process for every project since [there is a bug in PHPStorm](https://youtrack.jetbrains.com/issue/WI-56557) which prevents users from using relative paths for the `.php_cs.dist` configuration or executable file.
-
-Another theoretical approach to this issue is installing PHP-CS-Fixer and this package globally via `composer global require ...` but I haven't tried it yet.
+![](images/executable.png)

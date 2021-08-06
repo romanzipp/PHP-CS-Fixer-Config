@@ -1,6 +1,6 @@
 <?php
 
-// Ladies and gentleman fasten your seatbelts.
+// Ladies and gentlemen fasten your seatbelts.
 // We're going deep.
 
 return romanzipp\Fixer\Config::make()
