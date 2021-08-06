@@ -87,7 +87,9 @@ final class Config
      */
     public function in(string $workingDir): self
     {
-        $this->workingDir = $workingDir;
+        $this->finder->in(
+            $this->workingDir = $workingDir
+        );
 
         return $this;
     }
@@ -206,8 +208,6 @@ final class Config
         if (null === $this->workingDir) {
             throw new RuntimeException('The working dir has not been set. Please specify the `in()` method');
         }
-
-        $this->finder->in($this->workingDir);
 
         // Note: We don't need to merge all finder configuration values since this
         // is already done internally by the symfony finder instance.
