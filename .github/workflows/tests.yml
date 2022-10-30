@@ -1,22 +1,17 @@
 name: Tests
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
   test:
-
+    name: "PHP ${{ matrix.php }} - ${{ matrix.composer-dependency }}"
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        php: [7.1, 7.2, 7.3, 7.4, 8.0]
-        composer-dependency: [prefer-stable, prefer-lowest]
-
-    name: "PHP ${{ matrix.php }} - ${{ matrix.composer-dependency }}"
-
-    runs-on: ubuntu-latest
-
+        php: [ "7.4", "8.0", "8.1" ]
+        composer-dependency: [ prefer-stable, prefer-lowest ]
     steps:
-
       - uses: actions/checkout@v2
 
       - name: Setup PHP
