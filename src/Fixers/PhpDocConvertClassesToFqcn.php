@@ -10,6 +10,7 @@ use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use romanzipp\Fixer\Fixers\Support\UsesDeclaration;
 use SplFileInfo;
 use Symfony\Component\Finder\Finder;
 
@@ -59,14 +60,12 @@ function foo(Foo $foo): array {}
 
     public function fix(SplFileInfo $file, Tokens $tokens): void
     {
+        /** @var \romanzipp\Fixer\Fixers\Support\UsesDeclaration[] $uses */
         $uses = [];
 
         // Get `uses` declarations from current file
         foreach ((new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens) as $use) {
-            $uses[] = (object) [
-                'shortName' => $use->getShortName(),
-                'fullName' => $use->getFullName(),
-            ];
+            $uses[] = new UsesDeclaration($use->getShortName(), $use->getFullName());
         }
 
         $namespaces = (new NamespacesAnalyzer())->getDeclarations($tokens);
@@ -84,10 +83,10 @@ function foo(Foo $foo): array {}
                     continue;
                 }
 
-                $uses[] = (object) [
-                    'shortName' => $className = str_replace('.php', '', $item->getFilename()),
-                    'fullName' => $namespace->getFullName() . '\\' . $className,
-                ];
+                $uses[] = new UsesDeclaration(
+                    $className = str_replace('.php', '', $item->getFilename()),
+                    $namespace->getFullName() . '\\' . $className
+                );
             }
         }
 
@@ -118,8 +117,8 @@ function foo(Foo $foo): array {}
 
                 $foundUse = null;
                 foreach ($uses as $use) {
-                    if ($use->shortName === $matches['class']) {
-                        $matches['class'] = $use->fullName;
+                    if ($use->short === $matches['class']) {
+                        $matches['class'] = $use->full;
                         $foundUse = true;
                         break;
                     }
