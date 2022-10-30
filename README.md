@@ -50,7 +50,44 @@ $config->exclude(['...']);                  // Add single or many files to the l
 $config->excludeDirectories(['...']);       // Add single or many directories to the list of excluded directories.
 ```
 
-#### Access the config and finder instances
+## Available Rules
+
+### Convert PHPDoc Classes to FQCN
+
+```php
+$fixer->withRules([
+    'RomanZipp/phpdoc_fqcn' => true,
+]);
+```
+
+#### Bad
+
+```php
+use App\Foo;
+use App\Bar;
+
+/**
+ * @param  Foo $foo
+ * @return Bar[]  
+ */
+function foo(Foo $foo): array {}
+```
+
+#### Good
+
+```php
+use App\Foo;
+
+/**
+ * @param  \App\Foo $foo
+ * @return \App\Bar[]  
+ */
+function foo(Foo $foo): array {}
+```
+
+## Advanced Usage
+
+### Access the config and finder instances
 
 ```php
 return romanzipp\Fixer\Config::make()
@@ -59,6 +96,7 @@ return romanzipp\Fixer\Config::make()
         // ...
     })
     ->configCallback(static function (PhpCsFixer\Config $config): void {
+        $config->registerCustomFixers();
         // ...
     })
     // ...
