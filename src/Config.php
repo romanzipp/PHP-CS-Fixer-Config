@@ -5,6 +5,7 @@ namespace romanzipp\Fixer;
 use Closure;
 use PhpCsFixer\Config as BaseConfig;
 use PhpCsFixer\Finder;
+use romanzipp\Fixer\Fixers\PhpDocConvertClassesToFqcn;
 use romanzipp\Fixer\Presets\AbstractPreset;
 use romanzipp\Fixer\Presets\DynamicPreset;
 use RuntimeException;
@@ -214,6 +215,10 @@ final class Config
         foreach ($this->presets as $preset) {
             $preset->populateFinder($this->finder);
         }
+
+        $this->config->registerCustomFixers([
+            new PhpDocConvertClassesToFqcn(),
+        ]);
 
         $rules = [];
 
