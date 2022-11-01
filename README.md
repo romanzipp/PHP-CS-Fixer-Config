@@ -30,7 +30,7 @@ return romanzipp\Fixer\Config::make()
     ->out();
 ```
 
-### Available Presets
+## Available Presets
 
 - [**PrettyPHP**](src/Presets/PrettyPHP.php)
 - [**PrettyLaravel**](src/Presets/PrettyLaravel.php) (extends [PrettyPHP](src/Presets/PrettyPHP.php))
@@ -60,6 +60,9 @@ $fixer->withRules([
 ]);
 ```
 
+<details>
+<summary>Show code sample</summary>
+
 #### Bad
 
 ```php
@@ -84,6 +87,7 @@ use App\Foo;
  */
 function foo(Foo $foo): array {}
 ```
+</details>
 
 ## Advanced Usage
 
