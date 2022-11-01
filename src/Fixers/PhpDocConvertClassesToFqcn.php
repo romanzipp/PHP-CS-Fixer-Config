@@ -11,7 +11,6 @@ use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use romanzipp\Fixer\Fixers\Support\UsesDeclaration;
-use SplFileInfo;
 use Symfony\Component\Finder\Finder;
 
 final class PhpDocConvertClassesToFqcn implements FixerInterface
@@ -53,12 +52,12 @@ function foo(Foo $foo): array {}
         return 0;
     }
 
-    public function supports(SplFileInfo $file): bool
+    public function supports(\SplFileInfo $file): bool
     {
         return true;
     }
 
-    public function fix(SplFileInfo $file, Tokens $tokens): void
+    public function fix(\SplFileInfo $file, Tokens $tokens): void
     {
         /** @var \romanzipp\Fixer\Fixers\Support\UsesDeclaration[] $uses */
         $uses = [];

@@ -2,13 +2,11 @@
 
 namespace romanzipp\Fixer;
 
-use Closure;
 use PhpCsFixer\Config as BaseConfig;
 use PhpCsFixer\Finder;
 use romanzipp\Fixer\Fixers\PhpDocConvertClassesToFqcn;
 use romanzipp\Fixer\Presets\AbstractPreset;
 use romanzipp\Fixer\Presets\DynamicPreset;
-use RuntimeException;
 
 final class Config
 {
@@ -164,7 +162,7 @@ final class Config
      *
      * @return $this
      */
-    public function configCallback(Closure $callback): self
+    public function configCallback(\Closure $callback): self
     {
         $callback($this->config);
 
@@ -178,7 +176,7 @@ final class Config
      *
      * @return $this
      */
-    public function finderCallback(Closure $callback): self
+    public function finderCallback(\Closure $callback): self
     {
         $callback($this->finder);
 
@@ -190,7 +188,7 @@ final class Config
      *
      * @param \Closure $callback
      */
-    private function updateDynamicPreset(Closure $callback): void
+    private function updateDynamicPreset(\Closure $callback): void
     {
         array_walk($this->presets, static function (AbstractPreset $preset) use ($callback) {
             if ($preset instanceof DynamicPreset) {
@@ -207,7 +205,7 @@ final class Config
     public function out(): BaseConfig
     {
         if (null === $this->workingDir) {
-            throw new RuntimeException('The working dir has not been set. Please specify the `in()` method');
+            throw new \RuntimeException('The working dir has not been set. Please specify the `in()` method');
         }
 
         // Note: We don't need to merge all finder configuration values since this
