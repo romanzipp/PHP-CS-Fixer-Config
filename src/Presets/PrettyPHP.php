@@ -30,6 +30,10 @@ class PrettyPHP extends AbstractPreset
                     '@static' => 'static',
                 ],
             ],
+            'phpdoc_no_alias_tag' => [                  // https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/master/doc/rules/phpdoc/phpdoc_no_alias_tag.rst
+                'type' => 'var',
+                'link' => 'see',
+            ],
             'phpdoc_order' => true,                     // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/doc/rules/phpdoc/phpdoc_order.rst
             'phpdoc_to_comment' => false,               // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/doc/rules/phpdoc/phpdoc_to_comment.rst
         ];
