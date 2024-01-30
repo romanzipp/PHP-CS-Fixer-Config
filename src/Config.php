@@ -11,19 +11,19 @@ use romanzipp\Fixer\Presets\DynamicPreset;
 final class Config
 {
     /**
-     * @var \PhpCsFixer\Config
+     * @var BaseConfig
      */
     public $config;
 
     /**
-     * @var \PhpCsFixer\Finder
+     * @var Finder
      */
     public $finder;
 
     /**
      * @var string|null
      */
-    private $workingDir = null;
+    private $workingDir;
 
     /**
      * @var \romanzipp\Fixer\Presets\AbstractPreset[]
@@ -48,7 +48,7 @@ final class Config
     /**
      * Set the preset.
      *
-     * @param \romanzipp\Fixer\Presets\AbstractPreset $preset
+     * @param AbstractPreset $preset
      *
      * @return $this
      */
@@ -66,7 +66,7 @@ final class Config
     /**
      * Add a preset.
      *
-     * @param \romanzipp\Fixer\Presets\AbstractPreset $preset
+     * @param AbstractPreset $preset
      *
      * @return $this
      */
@@ -200,7 +200,7 @@ final class Config
     /**
      * Generate the php-cs-fixer config for final return.
      *
-     * @return \PhpCsFixer\Config
+     * @return BaseConfig
      */
     public function out(): BaseConfig
     {
