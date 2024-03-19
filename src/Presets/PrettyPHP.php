@@ -39,7 +39,7 @@ class PrettyPHP extends AbstractPreset
             'phpdoc_order' => true,                     // https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/master/doc/rules/phpdoc/phpdoc_order.rst
             'phpdoc_to_comment' => false,               // https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/master/doc/rules/phpdoc/phpdoc_to_comment.rst
             'fully_qualified_strict_types' => [         // https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/master/doc/rules/import/fully_qualified_strict_types.rst
-                'import_symbols' => true,
+                'import_symbols' => false,
                 'phpdoc_tags' => [],
                 'leading_backslash_in_global_namespace' => true,
             ],
