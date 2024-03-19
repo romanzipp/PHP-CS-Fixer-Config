@@ -90,7 +90,7 @@ function foo(Foo $foo): array {}
         }
 
         for ($index = 0; $index < $tokens->count(); ++$index) {
-            /** @var Token $token */
+            /** @var \PhpCsFixer\Tokenizer\Token $token */
             $token = $tokens[$index];
 
             if ( ! $token->isGivenKind(T_DOC_COMMENT)) {
