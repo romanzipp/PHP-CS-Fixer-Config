@@ -220,7 +220,9 @@ final class Config
 
         $rules = [];
 
-        array_walk($this->presets, static function (AbstractPreset $preset) use (&$rules) {
+        $presets = array_reverse($this->presets);
+
+        array_walk($presets, static function (AbstractPreset $preset) use (&$rules) {
             $rules = array_merge($rules, $preset->getRules());
         }, $this->presets);
 
