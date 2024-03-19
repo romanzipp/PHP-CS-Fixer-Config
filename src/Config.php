@@ -23,7 +23,7 @@ final class Config
     /**
      * @var string|null
      */
-    private $workingDir = null;
+    private $workingDir;
 
     /**
      * @var \romanzipp\Fixer\Presets\AbstractPreset[]
