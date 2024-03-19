@@ -51,7 +51,7 @@ class ConfigTest extends TestCase
         self::assertContains('example_rule', $config->getRules());
         self::assertContains('additional_rule', $config->getRules());
 
-        self::assertSame(['example_rule', 'additional_rule'], $config->getRules());
+        self::assertSame(['additional_rule', 'example_rule'], $config->getRules());
     }
 
     public function testConfigCallbackMethodOnFinder()
