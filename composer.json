@@ -27,6 +27,9 @@
             "romanzipp\\Fixer\\Tests\\": "tests"
         }
     },
+    "bin": [
+        "bin/php-cs-fixer-stdin"
+    ],
     "scripts": {
         "test": "vendor/bin/phpunit"
     },
