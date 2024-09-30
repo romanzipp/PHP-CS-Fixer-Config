@@ -1,33 +1,25 @@
 #!/usr/bin/env php
+
 <?php
 
 // Inspired from https://gist.github.com/vuon9/be16429f751e12f72e220c18777d9bc7
+//
+// This script will
+//   1. Read the file contents provided by STDIN
+//   2. Create a temporary file (tries multiple directories)
+//   3. Call PHP-CS-Fixer's "fix" command with path to the temp file
+//   4. provides the fixed file contents as STDOUT
 
-function is_fixer_command(string $a): bool
-{
-    return in_array($a, [
-        'check',
-        'describe',
-        'fix',
-        'help',
-        'list',
-        'list-files',
-        'list-sets',
-        'self-update',
-    ]);
-}
-
-function error_exit(string $message): void
+function error_exit(string $message, int $code = 1): void
 {
     fwrite(STDERR, $message . PHP_EOL);
-    exit(1);
+    exit($code);
 }
-
-$isDebug = false;
 
 // Read file contents from STDIN
 
 $fileContents = file_get_contents('php://stdin');
+$fileContents = ltrim($fileContents);
 
 // Create temp file and save STDIN contents
 
@@ -36,10 +28,11 @@ $tryTmpDirs = [
     '.tmp',
 ];
 
-$createdTempDir = false;
+$tmpFile = null;
+$createdTempFile = false;
 
 foreach ($tryTmpDirs as $tmpDir) {
-    $ok = file_exists($tmpDir) || mkdir($tmpDir, 0777, true);
+    $ok = is_dir($tmpDir) || mkdir($tmpDir, 0777, true);
     if (false === $ok) {
         continue;
     }
@@ -54,92 +47,45 @@ foreach ($tryTmpDirs as $tmpDir) {
         continue;
     }
 
-    $createdTempDir = true;
+    $createdTempFile = true;
 }
 
-if ( ! $createdTempDir) {
+if ( ! $createdTempFile) {
     error_exit('could not save STDIN to temp file');
-}
-
-// Read args from CLI and build command to forward
-
-array_shift($argv);
-
-$files = [];
-$commandFound = false;
-$commandAndArguments = [];
-
-foreach ($argv as $k => $param) {
-    if ('' == $param || '-' == $param) {
-        continue;
-    }
-
-    if ('--debug' == $param) {
-        $isDebug = true;
-        continue;
-    }
-
-    if (is_fixer_command($param)) {
-        if ( ! $commandFound) {
-            $commandFound = true;
-        }
-
-        $commandAndArguments[] = $param;
-        continue;
-    }
-
-    if ('-' == substr($param, 0, 1)) {
-        $commandAndArguments[] = $param;
-        continue;
-    }
-
-    $files[] = $param;
-}
-
-if ( ! $commandFound) {
-    error_exit('No php-cs-fixer command provided');
-}
-
-if (0 === count($files)) {
-    error_exit('No files provided');
-}
-
-if (count($files) > 1) {
-    error_exit('Only one file allowed');
-}
-
-$filePath = $files[0];
-if ($isDebug) {
-    echo 'Absolute file path: ' . $filePath . PHP_EOL;
 }
 
 // Check if PHP-CS-Fixer is installed
 
-$checkFixerBinaryResult = exec('which php-cs-fixer');
-if ('' === $checkFixerBinaryResult) {
+$whichBinary = exec('which php-cs-fixer');
+if ('' === $whichBinary) {
     error_exit('php-cs-fixer binary not found in $PATH folders');
 }
 
-$output = [];
-$returnCode = 0;
-$arguments = implode(' ', $commandAndArguments);
-if ($isDebug) {
-    echo 'Command and arguments: ' . $arguments . PHP_EOL;
-}
-
-$cmd = sprintf('php-cs-fixer %s %s', $arguments, $tmpFile);
-if ($isDebug) {
-    echo 'Forwarded command: ' . $cmd . PHP_EOL;
-}
+$cmd = sprintf('php-cs-fixer --quiet fix %s', $tmpFile);
 
 // Run the command
 
+$output = [];
+$returnCode = 0;
+
 exec($cmd, $output, $returnCode);
 
-if ($returnCode) {
-    exit($returnCode);
+if ($returnCode > 0) {
+    error_exit(implode(' ', $output), $returnCode);
 }
 
-echo file_get_contents($tmpFile);
+// Return new contents to STDOUT
 
-unlink($tmpFile);
+$newContents = file_get_contents($tmpFile);
+
+if (false === $newContents) {
+    error_exit('couldnt read from temp file after fixing');
+}
+
+if ( ! empty($newContents)) {
+    fwrite(STDOUT, ltrim($newContents));
+}
+
+if (false === @unlink($tmpFile)) {
+    error_exit('couldnt delete temp file');
+}
