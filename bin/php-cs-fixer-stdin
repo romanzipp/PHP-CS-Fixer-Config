@@ -23,8 +23,45 @@ function error_exit(string $message): void
     exit(1);
 }
 
-$tmpFile = tempnam(sys_get_temp_dir(), 'fix_');
 $isDebug = false;
+
+// Read file contents from STDIN
+
+$fileContents = file_get_contents('php://stdin');
+
+// Create temp file and save STDIN contents
+
+$tryTmpDirs = [
+    sys_get_temp_dir(),
+    '.tmp',
+];
+
+$createdTempDir = false;
+
+foreach ($tryTmpDirs as $tmpDir) {
+    $ok = file_exists($tmpDir) || mkdir($tmpDir, 0777, true);
+    if (false === $ok) {
+        continue;
+    }
+
+    $tmpFile = tempnam($tmpDir, 'fix_');
+    if (false === $tmpFile) {
+        continue;
+    }
+
+    $ok = file_put_contents($tmpFile, $fileContents);
+    if (false === $ok) {
+        continue;
+    }
+
+    $createdTempDir = true;
+}
+
+if ( ! $createdTempDir) {
+    error_exit('could not save STDIN to temp file');
+}
+
+// Read args from CLI and build command to forward
 
 array_shift($argv);
 
@@ -33,7 +70,7 @@ $commandFound = false;
 $commandAndArguments = [];
 
 foreach ($argv as $k => $param) {
-    if ('' == $param) {
+    if ('' == $param || '-' == $param) {
         continue;
     }
 
@@ -76,7 +113,7 @@ if ($isDebug) {
     echo 'Absolute file path: ' . $filePath . PHP_EOL;
 }
 
-@file_put_contents($tmpFile, file_get_contents($filePath));
+// Check if PHP-CS-Fixer is installed
 
 $checkFixerBinaryResult = exec('which php-cs-fixer');
 if ('' === $checkFixerBinaryResult) {
@@ -95,7 +132,8 @@ if ($isDebug) {
     echo 'Forwarded command: ' . $cmd . PHP_EOL;
 }
 
-// Actually run the command
+// Run the command
+
 exec($cmd, $output, $returnCode);
 
 if ($returnCode) {
@@ -103,4 +141,5 @@ if ($returnCode) {
 }
 
 echo file_get_contents($tmpFile);
+
 unlink($tmpFile);
