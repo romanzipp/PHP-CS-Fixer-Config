@@ -1,5 +1,3 @@
-#!/usr/bin/env php
-
 <?php
 
 // Inspired from https://gist.github.com/vuon9/be16429f751e12f72e220c18777d9bc7
@@ -19,7 +17,7 @@ function error_exit(string $message, int $code = 1): void
 // Read file contents from STDIN
 
 $fileContents = file_get_contents('php://stdin');
-$fileContents = ltrim($fileContents);
+$fileContents = trim($fileContents);
 
 // Create temp file and save STDIN contents
 
@@ -28,7 +26,6 @@ $tryTmpDirs = [
     '.tmp',
 ];
 
-$tmpFile = null;
 $createdTempFile = false;
 
 foreach ($tryTmpDirs as $tmpDir) {
@@ -83,7 +80,7 @@ if (false === $newContents) {
 }
 
 if ( ! empty($newContents)) {
-    fwrite(STDOUT, ltrim($newContents));
+    fwrite(STDOUT, trim($newContents) . PHP_EOL);
 }
 
 if (false === @unlink($tmpFile)) {
